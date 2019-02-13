@@ -10,7 +10,7 @@ chronal_array = []
 
 # iterate over the file to place the values into the array
 for row in file:
-    chronal_array += row
+    chronal_array.append(row)
 
     # convert the values from a str to int
 
