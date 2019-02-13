@@ -1,37 +1,43 @@
-# Read the variables from the CSV
-import csv
+import argparse
+import logging
 
 
+def open_file(filepath):
+    with open(filepath) as f:
+        return [int(item.strip()) for item in f]
 
-file = csv.reader(open("/Users/jkelly2/Documents/santa.csv"))
 
-# Create the empty array to place the values into
-chronal_array = []
+def parse_args():
+    parser = argparse.ArgumentParser(description="Day 2 of AdventOfCode")
+    parser.add_argument('-s', dest='santa_file', required=True, help='newline separated file containing integers')
+    args = parser.parse_args()
+    return args
 
-# iterate over the file to place the values into the array
-for row in file:
-    chronal_array.append(row)
+def find_duplicate():
+    running_total = 0
+    duplicates = []
+    # generate a cumulative total array
+    cumulative_total = set()
+    solved = False
+    while True:
+        for i in mylist:
+            if running_total in cumulative_total:
+                print(running_total)
+                solved = True
+                break
+            else:
+                cumulative_total.add(running_total)
+        if solved:
+            break
+    return(running_total)
 
-    # convert the values from a str to int
-
-chronal_array = list(map(int, chronal_array))
-running_total = 0
-duplicates = []
-# generate a cumulative total array
-cumulative_total = []
-solved = False
-iteration = 0
-while True:
-  iteration += 1
-  print(iteration)
-  for i in chronal_array:
-    running_total += i
-
-    if running_total in set(cumulative_total):
-        print(running_total)
-        solved = True
-        break
+if __name__ == '__main__':
+    args = parse_args()
+    try:
+        mylist = open_file(args.santa_file)
+    except ValueError:
+        logging.error("File should only contain valid integers")
     else:
-        cumulative_total.add(running_total)
-  if solved:
-      break
+        print("I can't find the file! ")
+    duplicate = find_duplicate()
+    print(duplicate)
