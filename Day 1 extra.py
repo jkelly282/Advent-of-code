@@ -32,6 +32,6 @@ while True:
         solved = True
         break
     else:
-        cumulative_total += [running_total]
+        cumulative_total.add(running_total)
   if solved:
       break
