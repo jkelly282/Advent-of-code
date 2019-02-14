@@ -13,23 +13,23 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-def find_duplicate():
+
+def find_duplicate(list_values):
     running_total = 0
-    duplicates = []
     # generate a cumulative total array
     cumulative_total = set()
     solved = False
     while True:
-        for i in mylist:
+        for i in list_values:
+            running_total += i
             if running_total in cumulative_total:
-                print(running_total)
                 solved = True
                 break
             else:
                 cumulative_total.add(running_total)
         if solved:
             break
-    return(running_total)
+    return running_total
 
 if __name__ == '__main__':
     args = parse_args()
@@ -37,7 +37,5 @@ if __name__ == '__main__':
         mylist = open_file(args.santa_file)
     except ValueError:
         logging.error("File should only contain valid integers")
-    else:
-        print("I can't find the file! ")
-    duplicate = find_duplicate()
+    duplicate = find_duplicate(mylist)
     print(duplicate)
