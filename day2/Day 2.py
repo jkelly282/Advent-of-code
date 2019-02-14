@@ -1,5 +1,8 @@
 import argparse
 
+from fuzzywuzzy import fuzz
+
+
 def open_file(filepath):
     with open(filepath) as f:
         return [str(item.strip()) for item in f]
@@ -32,6 +35,10 @@ def find_checksum():
     return checksum
 
 
+def find_similar_strings():
+    for i in mylines:
+            ratio_matching = fuzz._process_and_sort(i)
+            print(ratio_matching)
 
 
 if __name__ == '__main__':

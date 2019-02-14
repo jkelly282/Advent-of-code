@@ -9,7 +9,7 @@ def open_file(filepath):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Day 2 of AdventOfCode")
-    parser.add_argument('-s', dest='santa_file', required=True, help='newline separated file containing integers')
+    parser.add_argument('-f', dest='santa_file', required=True, help='newline separated file containing integers')
     args = parser.parse_args()
     return args
 
