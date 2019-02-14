@@ -1,4 +1,5 @@
 import argparse
+import logging
 
 from fuzzywuzzy import fuzz
 
@@ -36,9 +37,26 @@ def find_checksum():
 
 
 def find_similar_strings():
-    for i in mylines:
-            ratio_matching = fuzz._process_and_sort(i)
-            print(ratio_matching)
+    for i in range(len(mylines)):
+        for j in range(i + 1, len(mylines) - 1):
+            ratio_matching = []
+            ratio_matching = fuzz.ratio(mylines[i], mylines[j])
+            test = []
+            test.append(ratio_matching)
+            percentage_correct = int((len(mylines[i]) - 1) / len(mylines[i]) * 100)
+            if ratio_matching == percentage_correct:
+                return mylines[j], mylines[i]
+
+def remove_duplicates(duplicates):
+    i: object
+    answer= []
+    for i in duplicates[0]:
+        for j in duplicates[1]:
+            if i == j:
+                answer += i
+
+    return(answer)
+
 
 
 if __name__ == '__main__':
@@ -49,3 +67,6 @@ if __name__ == '__main__':
         logging.error("File should contain lines")
     checksum = find_checksum()
     print(checksum)
+    test = find_similar_strings()
+    answer = remove_duplicates(test)
+    print(answer)
