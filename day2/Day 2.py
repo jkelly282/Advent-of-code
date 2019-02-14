@@ -49,12 +49,15 @@ def find_similar_strings():
 
 def remove_duplicates(duplicates):
     i: object
-    answer= []
-    for i in duplicates[0]:
-        for j in duplicates[1]:
-            if i == j:
-                answer += i
+    answer= [i for i, j in zip(*duplicates) if i == j]
 
+    # for i in zip(duplicates[0],duplicates[1]):
+    #     if i[0] == i[1]:
+    #         answer.append(i[0])
+    # for i, l in enumerate(duplicates[0]):
+    #     if l == duplicates[1][i]:
+    #         answer += l
+    #         print(i)
     return(answer)
 
 
@@ -70,3 +73,4 @@ if __name__ == '__main__':
     test = find_similar_strings()
     answer = remove_duplicates(test)
     print(answer)
+    print(test)
