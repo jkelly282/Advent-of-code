@@ -3,6 +3,7 @@ import unittest
 from pyfakefs.fake_filesystem_unittest import Patcher
 
 from day1 import open_file
+from day1_extra import find_duplicate
 
 
 class TestOpenFile(unittest.TestCase):
@@ -27,7 +28,9 @@ class TestOpenFile(unittest.TestCase):
             self.assertRaises(ValueError, open_file, self.test_file)
 
     def test_find_duplicate(self):
-        self.skipTest('laziness')
+        expected = 2
+        input_list = [1, 1, 2, 1, -3]
+        self.assertEqual(expected, find_duplicate(input_list))
 
 if __name__ == '__main__':
     unittest.main()
