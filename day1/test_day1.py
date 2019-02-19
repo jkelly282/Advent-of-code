@@ -37,7 +37,10 @@ class TestOpenFile(unittest.TestCase):
         input_list = [1, 3, 4, -4]
         self.assertNotEqual(expected, find_duplicate(input_list))
 
-
+    def test_find_duplicate_TypeError(self):
+        expected = 2
+        input_list = "This should cause a TypeError"
+        self.assertRaises(TypeError, find_duplicate, input_list)
 
 if __name__ == '__main__':
     unittest.main()
