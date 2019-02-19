@@ -12,6 +12,16 @@ class Test_day_modules(unittest.TestCase):
         mylines = ["aaabbbcceeffgz"]
         self.assertEqual(expected, find_checksum(mylines))
 
+    def test_find_checksum_fail(self):
+        expected = 1
+        mylines = ["214152452423413412"]
+        self.assertNotEqual(expected, find_checksum(mylines))
+
+    def test_find_checksum_type_error(self):
+        expected = 1
+        mylines = ("hello")
+        self.assertRaises(TypeError, find_checksum(mylines), self.test_file)
+
     def test_find_similar_Strings(self):
         expected = ("aaaaaaaaaa", "aaaaaaaaab")
         mylines = ["aaaaaaaaab", "aaaaaaaaaa", "dkoskdkdakr"]
