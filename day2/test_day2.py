@@ -16,9 +16,8 @@ class Test_day_modules(unittest.TestCase):
         self.assertNotEqual(expected, find_checksum(mylines))
 
     def test_find_checksum_type_error(self):
-        expected = 1
-        mylines = ("hello")
-        self.assertRaises(TypeError, find_checksum(mylines), self.test_file)
+        mylines = (22)
+        self.assertRaises(TypeError, find_checksum, mylines)
 
     def test_find_similar_Strings(self):
         expected = ("aaaaaaaaaa", "aaaaaaaaab")
