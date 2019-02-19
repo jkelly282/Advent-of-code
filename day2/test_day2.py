@@ -1,8 +1,6 @@
 import unittest
 
-from day2 import find_checksum
-from day2 import find_similar_strings
-from day2 import remove_duplicates
+from day2 import find_checksum, find_similar_strings, remove_duplicates
 
 
 class Test_day_modules(unittest.TestCase):
@@ -20,7 +18,7 @@ class Test_day_modules(unittest.TestCase):
         self.assertEqual(expected, find_similar_strings(mylines))
 
     def test_remove_duplicates(self):
-        expected = ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a']
+        expected = ['a'] * 9
         test = ("aaaaaaaaaa", "aaaaaaaaab")
         self.assertEqual(expected, remove_duplicates(test))
 
