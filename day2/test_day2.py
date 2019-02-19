@@ -4,8 +4,6 @@ from day2 import find_checksum, find_similar_strings, remove_duplicates
 
 
 class Test_day_modules(unittest.TestCase):
-    def setUp(self):
-        self.test_file = 'test.txt'
 
     def test_find_checksum(self):
         expected = 1
