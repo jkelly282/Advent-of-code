@@ -29,6 +29,11 @@ class TestDayModules(unittest.TestCase):
         mylines = ("I wanna be the very best like no-one ever was ")
         self.assertNotEqual(expected, find_similar_strings(mylines))
 
+    def test_find_similar_strings_fail_empty(self):
+        expected = ("aaaaaaaaaa", "aaaaaaaaab")
+        mylines = ()
+        self.assertNotEqual(expected, find_similar_strings(mylines))
+
     def test_remove_duplicates(self):
         expected = ['a'] * 9
         test = ("aaaaaaaaaa", "aaaaaaaaab")

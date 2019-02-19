@@ -50,7 +50,7 @@ def find_similar_strings(string_lines):
 
 
 def remove_duplicates(duplicates):
-    answer = set(i for i, j in zip(*duplicates) if i == j)
+    answer = [i for i, j in zip(*duplicates) if i == j]
     return answer
 
 
