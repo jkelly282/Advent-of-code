@@ -14,8 +14,8 @@ class Test_day_modules(unittest.TestCase):
         self.assertEqual(expected, find_checksum(mylines))
 
     def test_find_similar_Strings(self):
-        expected = ["aaaaaaaaaaa", "aaaaaaaaaab"]
-        mylines = ["aaaaaaaaaaa", "aaaaaaaaaab", "dkoskdkdakr"]
+        expected = ("aaaaaaaaaa", "aaaaaaaaab")
+        mylines = ["aaaaaaaaab", "aaaaaaaaaa", "dkoskdkdakr"]
         self.assertEqual(expected, find_similar_strings(mylines))
 
 
