@@ -51,7 +51,7 @@ def find_similar_strings(string_lines):
 
 def remove_duplicates(duplicates):
     answer = [i for i, j in zip(*duplicates) if i == j]
-    return (answer)
+    return answer
 
 
 if __name__ == '__main__':
