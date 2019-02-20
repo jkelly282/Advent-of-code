@@ -7,8 +7,9 @@ import day2
 def parse_claims(mylines):
     fabric_coordinates = []
     for i in mylines:
-        parsed_claim = re.split('@|,|:|x', i)
-        fabric_coordinates.append(parsed_claim)
+        j = i.replace(' ', '')
+        parsed_claim = re.split('@|,|:|x', j)
+        fabric_coordinates.append(parsed_claim[1:5])
     return fabric_coordinates
 
 
