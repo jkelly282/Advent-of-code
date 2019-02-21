@@ -7,6 +7,12 @@ import day2
 
 
 def parse_claims(mylines):
+    '''
+
+    :param mylines: A list object containing the fabric claims as separate entities
+    to be parsed in the format (#int @ int,int: int x int)
+    :return: For each entity in the original list this function converts them to [['str','str','str','str']]
+    '''
     fabric_coordinates = []
     for i in mylines:
         # gets rid of the empty spaces
@@ -18,6 +24,10 @@ def parse_claims(mylines):
 
 
 def parse_fabric_list(claims):
+    '''
+    :param claims: a list object made up of lists in the format [['str','str','str','str'],['str','str','str','str']]
+    :return: the overall number of inches which overlap in the making of Santa's magic suit
+    '''
     santa_fabric = np.zeros((1000, 1000))
     claimed_inches = 0
     for i in claims:
