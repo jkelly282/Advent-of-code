@@ -17,24 +17,35 @@ def parse_claims(mylines):
     for i in mylines:
         # gets rid of the empty spaces
         j = i.replace(' ', '')
-        parsed_claim = re.split('@|,|:|x', j)
-        #remove the #claim
-        fabric_coordinates.append(parsed_claim[1:5])
+        parsed_claim = re.split('#|@|,|:|x', j)
+        # remove the #claim
+        fabric_coordinates.append(parsed_claim[1:6])
     return fabric_coordinates
 
 
 def parse_fabric_list(claims):
     '''
     :param claims: a list object made up of lists in the format [['str','str','str','str'],['str','str','str','str']]
-    :return: the overall number of inches which overlap in the making of Santa's magic suit
+    :return: the overall number of inches (int) which overlap in the making of Santa's magic suit
     '''
     santa_fabric = np.zeros((1000, 1000))
-    claimed_inches = 0
     for i in claims:
         # converting the list of strings to int
-        i = list(map(int, i))
+        i = list(map(int, i[1:5]))
         santa_fabric[i[1]:i[1] + i[3], i[0]:i[0] + i[2]] += 1
-    return np.sum(santa_fabric > 1)
+    return np.sum(santa_fabric > 1), santa_fabric
+
+
+def uncontested_claim(fabric_map):
+    '''
+    :param an array containing the submitted elf claims for santa's fabric:
+    :return: the claim that does not conflict with another elf's claim
+    '''
+    for i in claims:
+        i = list(map(int, i))
+        a, b, c, d, e = i
+        if np.all(fabric_map[c:c + e, b:b + d] == 1):
+            return a
 
 
 if __name__ == '__main__':
@@ -45,4 +56,6 @@ if __name__ == '__main__':
         logging.error("File should contain lines")
     claims = parse_claims(mylines)
     fabric = parse_fabric_list(claims)
-    print(fabric)
+    print(fabric[0])
+    winning_claim = uncontested_claim(fabric[1])
+    print(winning_claim)
