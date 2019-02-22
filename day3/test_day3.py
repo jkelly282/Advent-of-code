@@ -37,5 +37,12 @@ class TestDay3(unittest.TestCase):
         claims = [[1, 1, 3, 4, 4], [2, 3, 1, 4, 4]]
         self.assertEqual(expected, day3.parse_fabric_list(claims, 1000))
 
+    def test_uncontested_claims(self):
+        expected = 3
+        claims = [[1, 1, 3, 4, 4], [2, 3, 1, 4, 4], [3, 5, 5, 2, 2]]
+        fabric = day3.parse_fabric_list(claims, 8)
+        self.assertEqual(expected, day3.uncontested_claim(claims, fabric[1]))
+
+
 if __name__ == '__main__':
     unittest.main()

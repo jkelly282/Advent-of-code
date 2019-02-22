@@ -46,7 +46,7 @@ def parse_fabric_list(claims, size):
     return np.sum(santa_fabric > 1), santa_fabric
 
 
-def uncontested_claim(fabric_map: list) -> int:
+def uncontested_claim(claims, fabric_map: list) -> int:
     '''
     Checks for claims in the fabric which do not overlap with other claims
 
