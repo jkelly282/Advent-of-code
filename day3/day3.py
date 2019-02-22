@@ -1,12 +1,13 @@
 import logging
 import re
+from typing import List, Union, Tuple
 
 import numpy as np
 
 import day2
 
 
-def parse_claims(mylines):
+def parse_claims(mylines: Union[List[str], Tuple[str]]):
     '''
     Parses the elves claims
 
@@ -14,6 +15,12 @@ def parse_claims(mylines):
     to be parsed in the format (#int @ int,int: int x int)
     :return: For each entity in the original list this function converts them to [['str','str','str','str']]
     '''
+    if not mylines:
+        raise ValueError("mylines can not be empty")
+
+    if type(mylines) not in {tuple, list}:
+        raise TypeError("mylines must be tuple, list, or generator")
+
     fabric_coordinates = []
     for i in mylines:
         # gets rid of the empty spaces
