@@ -8,6 +8,7 @@ import day2
 
 def parse_claims(mylines):
     '''
+    Parses the elves claims
 
     :param mylines: A list object containing the fabric claims as separate entities
     to be parsed in the format (#int @ int,int: int x int)
@@ -25,6 +26,8 @@ def parse_claims(mylines):
 
 def parse_fabric_list(claims):
     '''
+    Puts the elves claims into an array object
+
     :param claims: a list object made up of lists in the format [['str','str','str','str'],['str','str','str','str']]
     :return: the overall number of inches (int) which overlap in the making of Santa's magic suit
     '''
@@ -36,9 +39,11 @@ def parse_fabric_list(claims):
     return np.sum(santa_fabric > 1), santa_fabric
 
 
-def uncontested_claim(fabric_map):
+def uncontested_claim(fabric_map: list) -> int:
     '''
-    :param an array containing the submitted elf claims for santa's fabric:
+    Checks for claims in the fabric which do not overlap with other claims
+
+    :param fabric_map: an array containing the submitted elf claims for santa's fabric:
     :return: the claim that does not conflict with another elf's claim
     '''
     for i in claims:
@@ -54,6 +59,8 @@ if __name__ == '__main__':
         mylines = day2.open_file(args.text_strings)
     except ValueError:
         logging.error("File should contain lines")
+        raise
+
     claims = parse_claims(mylines)
     fabric = parse_fabric_list(claims)
     print(fabric[0])
