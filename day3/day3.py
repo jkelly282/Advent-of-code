@@ -31,14 +31,14 @@ def parse_claims(mylines: Union[List[str], Tuple[str]]):
     return fabric_coordinates
 
 
-def parse_fabric_list(claims):
+def parse_fabric_list(claims, size):
     '''
     Puts the elves claims into an array object
 
     :param claims: a list object made up of lists in the format [['str','str','str','str'],['str','str','str','str']]
     :return: the overall number of inches (int) which overlap in the making of Santa's magic suit
     '''
-    santa_fabric = np.zeros((1000, 1000))
+    santa_fabric = np.zeros((size, size))
     for i in claims:
         # converting the list of strings to int
         i = list(map(int, i[1:5]))
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         raise
 
     claims = parse_claims(mylines)
-    fabric = parse_fabric_list(claims)
+    fabric = parse_fabric_list(claims, 1000)
     print(fabric[0])
     winning_claim = uncontested_claim(fabric[1])
     print(winning_claim)
