@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Optional
 
 import numpy as np
 
@@ -31,9 +31,10 @@ def parse_claims(mylines: Union[List[str], Tuple[str]]):
     return fabric_coordinates
 
 
-def parse_fabric_list(claims, size):
+def parse_fabric_list(claims: List[str], size: int) -> (int, list):
     '''
-    Puts the elves claims into an array object
+    Puts the elves claims into an array object of a user defined size. This then checks for claims which overlaps and
+    returns the claims that overlap in square inches
 
     :param claims: a list object made up of lists in the format [['str','str','str','str'],['str','str','str','str']]
     :return: the overall number of inches (int) which overlap in the making of Santa's magic suit
@@ -46,7 +47,7 @@ def parse_fabric_list(claims, size):
     return np.sum(santa_fabric > 1), santa_fabric
 
 
-def uncontested_claim(claims, fabric_map: list) -> int:
+def uncontested_claim(claims: list, fabric_map: np.array) -> Optional[int]:
     '''
     Checks for claims in the fabric which do not overlap with other claims
 
@@ -55,9 +56,9 @@ def uncontested_claim(claims, fabric_map: list) -> int:
     '''
     for i in claims:
         i = list(map(int, i))
-        a, b, c, d, e = i
-        if np.all(fabric_map[c:c + e, b:b + d] == 1):
-            return a
+        claim_ref, horizontal_ref, vertical_ref, x_pos, y_pos = i
+        if np.all(fabric_map[vertical_ref:vertical_ref + y_pos, horizontal_ref:horizontal_ref + x_pos] == 1):
+            return claim_ref
 
 
 if __name__ == '__main__':
@@ -69,7 +70,7 @@ if __name__ == '__main__':
         raise
 
     claims = parse_claims(mylines)
-    fabric = parse_fabric_list(claims, 1000)
+    fabric = parse_fabric_list(claims, int(input("What size is your fabric in square inches? ")))
     print(fabric[0])
-    winning_claim = uncontested_claim(fabric[1])
+    winning_claim = uncontested_claim(claims=claims, fabric_map=fabric[1])
     print(winning_claim)

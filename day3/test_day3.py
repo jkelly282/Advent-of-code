@@ -1,5 +1,7 @@
 import unittest
 
+import numpy as np
+
 import day3
 
 
@@ -40,8 +42,14 @@ class TestDay3(unittest.TestCase):
     def test_uncontested_claims(self):
         expected = 3
         claims = [[1, 1, 3, 4, 4], [2, 3, 1, 4, 4], [3, 5, 5, 2, 2]]
-        fabric = day3.parse_fabric_list(claims, 8)
-        self.assertEqual(expected, day3.uncontested_claim(claims, fabric[1]))
+        fabric = day3.parse_fabric_list(claims, 8)  # the option 8 should fail as the expected answer is 3
+        self.assertNotEqual(expected, day3.uncontested_claim(claims, fabric[1]))
+
+    def test_uncontested_claim(self):
+        expected = 0
+        array = np.zeros((10, 10))
+        claims = [[1, 1, 3, 4, 4], [2, 3, 1, 4, 4], [3, 5, 5, 2, 2]]
+        self.assertIsNone(day3.uncontested_claim(claims, array))
 
 
 if __name__ == '__main__':
