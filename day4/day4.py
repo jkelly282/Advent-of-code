@@ -1,4 +1,3 @@
-import collections
 import logging
 from datetime import datetime
 
@@ -29,7 +28,10 @@ def parse_list_chronological_date():
     pd.period_range('1516-01-01', '1518-12-31', freq='D')
     guard_shifts["Time"] = pd.to_datetime(guard_shifts["Time"], format="[%Y-%m-%d %H:%M]")
     guard_shifts.sort_values('Time', inplace=True)
-    print(guard_shifts)
+    for line in guard_shifts:
+        print("hello"
+        dea)
+        # print(guard_shifts)
 
 
 if __name__ == '__main__':
@@ -41,18 +43,24 @@ if __name__ == '__main__':
         logging.error("File should contain lines")
     mylines.sort()
     parse_list_chronological_date()
-
-    timeasleep = collections.defaultdict(int)
-    guard_id = ""
+    guard_id = {}
     d1 = 0
     d2 = 0
+    guard_number = ""
     for line in mylines:
         if '#' in line:
             guard = parse_guard_name(line)
-            timeasleep[guard]
+            if guard not in guard_id:
+                guard_number = guard
+                guard_id[guard] = 0
+            elif guard in guard_id:
+                guard_number = guard
         elif "falls" in line:
             d1 = time_parse(line)
         elif "wakes" in line:
             d2 = time_parse(line)
             sleep = days_between(d1, d2)
-            print(sleep)
+            guard_id[guard_number] += int((sleep.total_seconds() / 60))
+    # print(guard_id)
+    sorted_guard = sorted(guard_id.items(), key=lambda kv: kv[1], reverse=True)
+    print(sorted_guard)
