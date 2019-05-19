@@ -1,7 +1,8 @@
 import logging
+import re
 from datetime import datetime
-import pandas as pd
-from day2 import day2
+
+import day2
 
 ()
 
@@ -17,8 +18,10 @@ def time_parse_minute(line):
     return(int(time))
 
 def parse_guard_name(line):
-    guard_id = line[26:30]
-    return guard_id
+    guard_id = re.split('#', line)
+    guard_id = re.split(" ", guard_id[1])
+
+    return guard_id[0]
 
 
 def days_between(d1, d2):
@@ -35,13 +38,13 @@ def find_most_frequent(lines, guard):
         if '#' in line:
             guard_number = parse_guard_name(line)
         if guard_number == guard:
-            print(line)
+            # print(line)
             if "falls" in line:
                 d1 = time_parse_minute(line)
             if "wakes" in line:
                 d2 = time_parse_minute(line)
                 minutes_asleep += range(d1,d2)
-                print(minutes_asleep)
+                #rint(minutes_asleep)
     minutes_asleep_dict = {}
     for i in minutes_asleep:
         if i in minutes_asleep_dict:
@@ -49,13 +52,13 @@ def find_most_frequent(lines, guard):
         if i not in minutes_asleep_dict:
             minutes_asleep_dict[i] = 1
         sorted_minutes = sorted(minutes_asleep_dict.items(), key=lambda kv: kv[1], reverse=True)
-        print(sorted_minutes)
+        #print(sorted_minutes)
         minute_winning = sorted_minutes[0][0]
         answer = int(minute_winning)*int(guard[0:2])
-        print(answer)
+        # print(answer)
 
 
-def find_most_frequent_minute(lines):
+def find_most_frequent_minute(lines, guard):
     guard_number = ""
     minutes_asleep = []
     d1 = 0
@@ -64,34 +67,28 @@ def find_most_frequent_minute(lines):
         if '#' in line:
             guard_number = parse_guard_name(line)
         if guard_number == guard:
-            print(line)
+            #print(line)
             if "falls" in line:
                 d1 = time_parse_minute(line)
             if "wakes" in line:
                 d2 = time_parse_minute(line)
-                minutes_asleep += range(d1,d2)
-                print(minutes_asleep)
-    minutes_asleep_dict = {}
+                minutes_asleep += range(d1, d2)
+                # print(minutes_asleep)
+    minutes_asleep_dict_frequent_guard = {}
+    sorted_minutes = []
+    total = []
     for i in minutes_asleep:
-        if i in minutes_asleep_dict:
-            minutes_asleep_dict[i] += 1
-        if i not in minutes_asleep_dict:
-            minutes_asleep_dict[i] = 1
-        sorted_minutes = sorted(minutes_asleep_dict.items(), key=lambda kv: kv[1], reverse=True)
-        print(sorted_minutes)
-        minute_winning = sorted_minutes[0][0]
-        answer = int(minute_winning)*int(guard[0:2])
+        if i in minutes_asleep_dict_frequent_guard:
+            minutes_asleep_dict_frequent_guard[i] += 1
+        if i not in minutes_asleep_dict_frequent_guard:
+            minutes_asleep_dict_frequent_guard[i] = 1
+        sorted_minutes = sorted(minutes_asleep_dict_frequent_guard.items(), key=lambda kv: kv[1], reverse=True)
+        sorted_minutes.append(guard)
+    total.append(sorted_minutes)
 
-        print(guard_number)
-        print((sorted_minutes[0][0]*int(guard_number[0:3])))
-
-
-
-
-
-
-
-
+    return total
+    # print(guard_number)
+    #print((sorted_minutes[0][0]*int(guard_number[0:3])))
 
 
 if __name__ == '__main__':
@@ -124,4 +121,25 @@ if __name__ == '__main__':
     sorted_guard = sorted(guard_id.items(), key=lambda kv: kv[1], reverse=True)
     winning = (sorted_guard[0][0])
     find_most_frequent(mylines, winning)
-    find_most_frequent_minute(mylines)
+
+    guard_ids = []
+    guard_sleep_most = []
+    for i in mylines:
+        if '#' in i:
+            guard_id = parse_guard_name(i)
+            guard_ids.append(guard_id)
+    for i in guard_ids:
+        guard_frequent = find_most_frequent_minute(mylines, i)
+        # guard_frequent_sorted = sorted(guard_frequent, reverse=True)
+        guard_sleep_most.append(guard_frequent)
+    print(guard_sleep_most)
+
+    winning_minute = 0
+    for i in guard_sleep_most:
+        for j in i:
+            if j > winning_minute:
+                winning_minute = j
+                print(i)
+
+        # sorted(i.items(), key=lambda kv: kv[1], reverse=True)
+    # print(sorted(guard_sleep_most, key=lambda kv: kv[i[]1]))
