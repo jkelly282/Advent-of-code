@@ -1,10 +1,8 @@
 import logging
 import re
 from datetime import datetime
+import day2.day2
 
-import day2
-
-()
 
 
 def time_parse(line):
@@ -92,9 +90,10 @@ def find_most_frequent_minute(lines, guard):
 
 
 if __name__ == '__main__':
-    args = day2.parse_args()
+    import day2.day2
+    args = day2.day2.parse_args()
     try:
-        mylines = day2.open_file(args.text_strings)
+        mylines = day2.day2.open_file(args.text_strings)
     except ValueError:
         logging.error("File should contain lines")
     mylines.sort()
@@ -135,11 +134,20 @@ if __name__ == '__main__':
     print(guard_sleep_most)
 
     winning_minute = 0
-    for i in guard_sleep_most:
-        for j in i:
-            if j > winning_minute:
-                winning_minute = j
-                print(i)
+    winning_time = 0
+
+    for orange in guard_sleep_most:
+
+        try:
+          minute = orange[0][0][1]
+          if orange[0][0][1] > winning_minute:
+              winning_minute = orange[0][0][1]
+              winning_time = orange[0][0][0]
+              print(orange[0][-1][-1])
+        except IndexError:
+            continue
+    print(winning_minute)
+    print(winning_time)
 
         # sorted(i.items(), key=lambda kv: kv[1], reverse=True)
     # print(sorted(guard_sleep_most, key=lambda kv: kv[i[]1]))
