@@ -1,7 +1,7 @@
 # Read the variables from the CSV
 import argparse
 import logging
-
+print("hello!")
 
 def open_file(filepath):
     with open(filepath) as f:
