@@ -1,24 +1,16 @@
 import logging
 import re
 from datetime import datetime
-import day2.day2
-
-
 
 def time_parse(line):
     time = line[1:17]
     map(int, time)
     return time
 
-def time_parse_minute(line):
-    time = line[15:17]
-    map(int, time)
-    return(int(time))
 
 def parse_guard_name(line):
     guard_id = re.split('#', line)
     guard_id = re.split(" ", guard_id[1])
-
     return guard_id[0]
 
 
@@ -27,84 +19,18 @@ def days_between(d1, d2):
     d2 = datetime.strptime(d2, "%Y-%m-%d %H:%M")
     return d2 - d1
 
-def find_most_frequent(lines, guard):
-    guard_number = ""
-    minutes_asleep = []
-    d1 = 0
-    d2 = 0
-    for line in lines:
-        if '#' in line:
-            guard_number = parse_guard_name(line)
-        if guard_number == guard:
-            # print(line)
-            if "falls" in line:
-                d1 = time_parse_minute(line)
-            if "wakes" in line:
-                d2 = time_parse_minute(line)
-                minutes_asleep += range(d1,d2)
-                #rint(minutes_asleep)
-    minutes_asleep_dict = {}
-    for i in minutes_asleep:
-        if i in minutes_asleep_dict:
-            minutes_asleep_dict[i] += 1
-        if i not in minutes_asleep_dict:
-            minutes_asleep_dict[i] = 1
-        sorted_minutes = sorted(minutes_asleep_dict.items(), key=lambda kv: kv[1], reverse=True)
-        #print(sorted_minutes)
-        minute_winning = sorted_minutes[0][0]
-        answer = int(minute_winning)*int(guard[0:2])
-        # print(answer)
 
-
-def find_most_frequent_minute(lines, guard):
-    guard_number = ""
-    minutes_asleep = []
-    d1 = 0
-    d2 = 0
-    for line in lines:
-        if '#' in line:
-            guard_number = parse_guard_name(line)
-        if guard_number == guard:
-            #print(line)
-            if "falls" in line:
-                d1 = time_parse_minute(line)
-            if "wakes" in line:
-                d2 = time_parse_minute(line)
-                minutes_asleep += range(d1, d2)
-                # print(minutes_asleep)
-    minutes_asleep_dict_frequent_guard = {}
-    sorted_minutes = []
-    total = []
-    for i in minutes_asleep:
-        if i in minutes_asleep_dict_frequent_guard:
-            minutes_asleep_dict_frequent_guard[i] += 1
-        if i not in minutes_asleep_dict_frequent_guard:
-            minutes_asleep_dict_frequent_guard[i] = 1
-        sorted_minutes = sorted(minutes_asleep_dict_frequent_guard.items(), key=lambda kv: kv[1], reverse=True)
-        sorted_minutes.append(guard)
-    total.append(sorted_minutes)
-
-    return total
-    # print(guard_number)
-    #print((sorted_minutes[0][0]*int(guard_number[0:3])))
-
-
-if __name__ == '__main__':
-    import day2.day2
-    args = day2.day2.parse_args()
-    try:
-        mylines = day2.day2.open_file(args.text_strings)
-    except ValueError:
-        logging.error("File should contain lines")
-    mylines.sort()
-
+def parse_guard_input(lines):
     guard_id = {}
+    return_tuple = ()
     d1 = 0
-    d2 = 0
+    minutes_asleep = []
+    guard_names = []
     guard_number = ""
-    for line in mylines:
+    for line in lines:
         if '#' in line:
             guard = parse_guard_name(line)
+            guard_names.append(guard)
             if guard not in guard_id:
                 guard_number = guard
                 guard_id[guard] = 0
@@ -115,39 +41,67 @@ if __name__ == '__main__':
         elif "wakes" in line:
             d2 = time_parse(line)
             sleep = days_between(d1, d2)
-            guard_id[guard_number] += int((sleep.total_seconds() / 60))
-    # print(guard_id)
-    sorted_guard = sorted(guard_id.items(), key=lambda kv: kv[1], reverse=True)
-    winning = (sorted_guard[0][0])
-    find_most_frequent(mylines, winning)
+            minutes = sleep.total_seconds()
+            total_minutes = minutes / 60
+            minutes_asleep.append(int(total_minutes))
+            guard_id[guard_number] += int(total_minutes)
+    return_tuple += guard_id, minutes_asleep, guard_names
+    return return_tuple
 
-    guard_ids = []
-    guard_sleep_most = []
-    for i in mylines:
-        if '#' in i:
-            guard_id = parse_guard_name(i)
-            guard_ids.append(guard_id)
+
+def part_1(lines):
+    guard_id = parse_guard_input(lines)
+    guard = guard_id[0]
+    sorted_guard = sorted(guard.items(), key=lambda kv: kv[1], reverse=True)
+    winning = (sorted_guard[0][0])
+    print("The answer for part 1 is", winning)
+
+
+def find_most_frequent_minute(lines, guard):
+    minutes_asleep = parse_guard_input(lines)
+    minutes_asleep_dict_frequent_guard = {}
+    sorted_minutes = []
+    total = []
+    for i in minutes_asleep[1]:
+        if i in minutes_asleep_dict_frequent_guard:
+            minutes_asleep_dict_frequent_guard[i] += 1
+        if i not in minutes_asleep_dict_frequent_guard:
+            minutes_asleep_dict_frequent_guard[i] = 1
+        sorted_minutes = sorted(minutes_asleep_dict_frequent_guard.items(), key=lambda kv: kv[1], reverse=True)
+        sorted_minutes.append(guard)
+    total.append(sorted_minutes)
+    return total
+
+
+def part_2(guard_ids):
     for i in guard_ids:
         guard_frequent = find_most_frequent_minute(mylines, i)
-        # guard_frequent_sorted = sorted(guard_frequent, reverse=True)
         guard_sleep_most.append(guard_frequent)
-    print(guard_sleep_most)
-
     winning_minute = 0
     winning_time = 0
-
     for orange in guard_sleep_most:
-
         try:
-          minute = orange[0][0][1]
-          if orange[0][0][1] > winning_minute:
-              winning_minute = orange[0][0][1]
-              winning_time = orange[0][0][0]
-              print(orange[0][-1][-1])
+            minute = orange[0][0][1]
+            if orange[0][0][1] > winning_minute:
+                winning_minute = orange[0][0][1]
+                winning_time = orange[0][0][0]
+                guard_sleep = orange[0][-1]
         except IndexError:
             continue
-    print(winning_minute)
-    print(winning_time)
+    answer2 = int(winning_time) * int(guard_sleep)
+    print("The answer for part two is", answer2)
 
-        # sorted(i.items(), key=lambda kv: kv[1], reverse=True)
-    # print(sorted(guard_sleep_most, key=lambda kv: kv[i[]1]))
+
+if __name__ == '__main__':
+    import day2
+
+    args = day2.parse_args()
+    try:
+        mylines = day2.open_file(args.text_strings)
+    except ValueError:
+        logging.error("File should contain lines")
+    mylines.sort()
+    part_1(mylines)
+    guard_sleep_most = []
+    guard_ids = parse_guard_input(mylines)
+    part_2(guard_ids[2])
